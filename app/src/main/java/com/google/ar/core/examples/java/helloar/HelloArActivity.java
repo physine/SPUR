@@ -183,37 +183,37 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
     return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
   }
 
-    @Override
-    public List<Recognition> recognizeImage(Bitmap bitmap) {
-        return null;
-    }
+  @Override
+  public List<Recognition> recognizeImage(Bitmap bitmap) {
+    return null;
+  }
 
-    @Override
-    public void enableStatLogging(boolean debug) {
+  @Override
+  public void enableStatLogging(boolean debug) {
 
-    }
+  }
 
-    @Override
-    public String getStatString() {
-        return "";
-    }
+  @Override
+  public String getStatString() {
+    return "";
+  }
 
-    @Override
-    public void close() {
-    }
+  @Override
+  public void close() {
+  }
 
-    @Override
-    public void setNumThreads(int num_threads) {
-        if (tfLite != null) tfLite.setNumThreads(num_threads);
-    }
+  @Override
+  public void setNumThreads(int num_threads) {
+    if (tfLite != null) tfLite.setNumThreads(num_threads);
+  }
 
-    @Override
-    public void setUseNNAPI(boolean isChecked) {
-        if (tfLite != null) tfLite.setUseNNAPI(isChecked);
-    }
+  @Override
+  public void setUseNNAPI(boolean isChecked) {
+    if (tfLite != null) tfLite.setUseNNAPI(isChecked);
+  }
 
 
-    // Anchors created from taps used for object placing with a given color.
+  // Anchors created from taps used for object placing with a given color.
   private static class ColoredAnchor {
     public final Anchor anchor;
     public final float[] color;
@@ -344,7 +344,7 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
         }
         session.configure(config);
       } catch (UnavailableArcoreNotInstalledException
-          | UnavailableUserDeclinedInstallationException e) {
+              | UnavailableUserDeclinedInstallationException e) {
         message = "Please install ARCore";
         exception = e;
       } catch (UnavailableApkTooOldException e) {
@@ -399,7 +399,7 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
     super.onRequestPermissionsResult(requestCode, permissions, results);
     if (!CameraPermissionHelper.hasCameraPermission(this)) {
       Toast.makeText(this, "Camera permission is needed to run this application", Toast.LENGTH_LONG)
-          .show();
+              .show();
       if (!CameraPermissionHelper.shouldShowRequestPermissionRationale(this)) {
         // Permission denied with checking "Do not ask again".
         CameraPermissionHelper.launchPermissionSettings(this);
@@ -429,7 +429,7 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
       virtualObject.createOnGlThread(/*context=*/ this, "models/andy.obj", "models/andy.png");
       virtualObject.setBlendMode(BlendMode.AlphaBlending);
       virtualObject.setDepthTexture(
-          depthTexture.getTextureId(), depthTexture.getWidth(), depthTexture.getHeight());
+              depthTexture.getTextureId(), depthTexture.getWidth(), depthTexture.getHeight());
       virtualObject.setMaterialProperties(0.0f, 2.0f, 0.5f, 6.0f);
 
     } catch (IOException e) {
@@ -489,7 +489,7 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
       // If not tracking, don't draw 3D objects, show tracking failure reason instead.
       if (camera.getTrackingState() == TrackingState.PAUSED) {
         messageSnackbarHelper.showMessage( // "moving to fast, slow down"
-            this, TrackingStateHelper.getTrackingFailureReasonString(camera));
+                this, TrackingStateHelper.getTrackingFailureReasonString(camera));
         return;
       }
 
@@ -524,7 +524,7 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
 
       // Visualize planes.
       planeRenderer.drawPlanes(
-          session.getAllTrackables(Plane.class), camera.getDisplayOrientedPose(), projmtx);
+              session.getAllTrackables(Plane.class), camera.getDisplayOrientedPose(), projmtx);
 
       // Visualize anchors created by touch.
       float scaleFactor = 0.25f;
@@ -728,16 +728,16 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
 
         for (int i = 0; i < numDetectionsOutput; ++i) {
           final RectF detection = new RectF(
-                          outputLocations[0][i][1] * inputSize,
-                          outputLocations[0][i][0] * inputSize,
-                         outputLocations[0][i][3] * inputSize,
-                       outputLocations[0][i][2] * inputSize);
+                  outputLocations[0][i][1] * inputSize,
+                  outputLocations[0][i][0] * inputSize,
+                  outputLocations[0][i][3] * inputSize,
+                  outputLocations[0][i][2] * inputSize);
           int labelOffset = 1;
           recognitions.add(new Recognition("" + i, labels.get((int) outputClasses[0][i] + labelOffset), outputScores[0][i], detection));
         }
 
-        float alpha = 480/300; // scale factor for height
-        float beta = 640/300;  // scale factor for width
+        float alpha = 480/300; // scale factor for height 480
+        float beta = 640/300;  // scale factor for width 640
         float left = recognitions.get(0).getLocation().left * beta; // b
         float right = recognitions.get(0).getLocation().right * beta; //b
         float top = recognitions.get(0).getLocation().top * alpha; //a
@@ -745,6 +745,8 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
 
         float centerX = (right-left)/2;
         float centerY = (top-bottom)/2;
+        centerX += 300;
+        centerY += 1000;
 
         float[] purple = new float[] {166.0f, 133.0f, 244.0f, 255.0f};
         float[] black = new float[] {66.0f, 53.0f, 44.0f, 255.0f};
@@ -752,7 +754,7 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
         float[] green = new float[] {66.0f, 133.0f, 244.0f, 255.0f};
         float[] white = DEFAULT_COLOR;
         Log.i("up-scales co-ordinate locations",
-                   "co-ordinates of "+recognitions.get(0).getTitle()+
+                "co-ordinates of "+recognitions.get(0).getTitle()+
                         "\nlocation scaled Left Top= ("+ left +", "+ top+")"+
                         "\nlocation scaled Left Bottom= ("+ left +", "+ bottom + ")"+
                         "\nlocation scaled Right Top= ("+ right +", "+ top + ")"+
@@ -761,18 +763,12 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
 
         List<HitResult> hitResultsCenter = frame.hitTest(centerX, centerY);
         Log.i("HitResult", "**** hitResultsLeftBottom size= "+hitResultsCenter.size()+" ****");
+        Log.i("HitResultCenter", "**** center (x, y) = ("+ centerX +", "+ centerY + ") ****"); // max is 480, 640
 
         List<HitResult> hitResultsLeftBottom = frame.hitTest(left, bottom);
-        Log.i("HitResult", "**** hitResultsLeftBottom size= "+hitResultsLeftBottom.size()+" ****");
-//
         List<HitResult> hitResultsRightBottom = frame.hitTest(right, bottom);
-        Log.i("HitResult", "**** HitResult size= "+hitResultsRightBottom.size()+" ****");
-//
         List<HitResult> hitResultsLeftTop = frame.hitTest(left, top);
-        Log.i("HitResult", "**** HitResult size= "+hitResultsLeftTop.size()+" ****");
-
         List<HitResult> hitResultsRightTop = frame.hitTest(right, top);
-        Log.i("HitResult", "**** HitResult size= "+hitResultsRightTop.size()+" ****");
 
         if(hitResultsLeftBottom.size() > 0 || hitResultsRightBottom.size() > 0
                 || hitResultsLeftTop.size() > 0 || hitResultsRightTop.size() > 0) {
@@ -788,42 +784,42 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
         if(hitResultsCenter.size() > 0){
           // only anchor to the closest plane if more than one was returned
           hitResult = hitResultsCenter.get(0);
-          anchors.add(new ColoredAnchor(hitResult.createAnchor(), black));
-          numOfAnchors++;
-        }
-
-        //HitResult hitResult;
-        // left bottom
-        if(hitResultsLeftBottom.size() > 0){
-          // only anchor to the closest plane if more than one
-          hitResult = hitResultsLeftBottom.get(0);
-          anchors.add(new ColoredAnchor(hitResult.createAnchor(), green));
-          numOfAnchors++;
-        }
-
-        // left top
-        if(hitResultsRightBottom.size() > 0){
-          // only anchor to the closest plane if more than one was returned
-          hitResult = hitResultsRightBottom.get(0);
-          anchors.add(new ColoredAnchor(hitResult.createAnchor(), pink));
-          numOfAnchors++;
-        }
-
-        // left bottom unacurate
-        if(hitResultsLeftTop.size() > 0){
-          // only anchor to the closest plane if more than one was returned
-          hitResult = hitResultsLeftTop.get(0);
           anchors.add(new ColoredAnchor(hitResult.createAnchor(), white));
           numOfAnchors++;
         }
 
-        // left top
-        if(hitResultsRightTop.size() > 0){
-          // only anchor to the closest plane if more than one was returned
-          hitResult = hitResultsRightTop.get(0);
-          anchors.add(new ColoredAnchor(hitResult.createAnchor(), purple));
-          numOfAnchors++;
-        }
+        //HitResult hitResult;
+//        // left bottom
+//        if(hitResultsLeftBottom.size() > 0){
+//          // only anchor to the closest plane if more than one
+//          hitResult = hitResultsLeftBottom.get(0);
+//          anchors.add(new ColoredAnchor(hitResult.createAnchor(), green));
+//          numOfAnchors++;
+//        }
+//
+//        // left top
+//        if(hitResultsRightBottom.size() > 0){
+//          // only anchor to the closest plane if more than one was returned
+//          hitResult = hitResultsRightBottom.get(0);
+//          anchors.add(new ColoredAnchor(hitResult.createAnchor(), pink));
+//          numOfAnchors++;
+//        }
+//
+//        // left bottom unacurate
+//        if(hitResultsLeftTop.size() > 0){
+//          // only anchor to the closest plane if more than one was returned
+//          hitResult = hitResultsLeftTop.get(0);
+//          anchors.add(new ColoredAnchor(hitResult.createAnchor(), white));
+//          numOfAnchors++;
+//        }
+//
+//        // left top
+//        if(hitResultsRightTop.size() > 0){
+//          // only anchor to the closest plane if more than one was returned
+//          hitResult = hitResultsRightTop.get(0);
+//          anchors.add(new ColoredAnchor(hitResult.createAnchor(), purple));
+//          numOfAnchors++;
+//        }
 
         String anchorInfo;
         if(numOfAnchors == 1){
@@ -850,9 +846,9 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
         if ((trackable instanceof Plane
                 && ((Plane) trackable).isPoseInPolygon(hit.getHitPose())
                 && (PlaneRenderer.calculateDistanceToPlane(hit.getHitPose(), camera.getPose()) > 0))
-            || (trackable instanceof Point
+                || (trackable instanceof Point
                 && ((Point) trackable).getOrientationMode()
-                    == OrientationMode.ESTIMATED_SURFACE_NORMAL)) {
+                == OrientationMode.ESTIMATED_SURFACE_NORMAL)) {
           // Hits are sorted by depth. Consider only closest hit on a plane or oriented point.
           // Cap the number of objects created. This avoids overloading both the
           // rendering system and ARCore.
@@ -876,8 +872,8 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
           // Adding an Anchor tells ARCore that it should track this position in
           // space. This anchor is created on the Plane to place the 3D model
           // in the correct position relative both to the world and to the plane.
-            // TODO: note that the bellow line was commented out to prevent android robots appearing
-            // TODO: every time the screen is taped on a detected surface
+          // TODO: note that the bellow line was commented out to prevent android robots appearing
+          // TODO: every time the screen is taped on a detected surface
           // anchors.add(new ColoredAnchor(hit.createAnchor(), objColor));
 
           // For devices that support the Depth API, shows a dialog to suggest enabling
@@ -903,19 +899,19 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
 
     // Asks the user whether they want to use depth-based occlusion.
     new AlertDialog.Builder(this)
-        .setTitle(R.string.options_title_with_depth)
-        .setMessage(R.string.depth_use_explanation)
-        .setPositiveButton(
-            R.string.button_text_enable_depth,
-            (DialogInterface dialog, int which) -> {
-              depthSettings.setUseDepthForOcclusion(true);
-            })
-        .setNegativeButton(
-            R.string.button_text_disable_depth,
-            (DialogInterface dialog, int which) -> {
-              depthSettings.setUseDepthForOcclusion(false);
-            })
-        .show();
+            .setTitle(R.string.options_title_with_depth)
+            .setMessage(R.string.depth_use_explanation)
+            .setPositiveButton(
+                    R.string.button_text_enable_depth,
+                    (DialogInterface dialog, int which) -> {
+                      depthSettings.setUseDepthForOcclusion(true);
+                    })
+            .setNegativeButton(
+                    R.string.button_text_disable_depth,
+                    (DialogInterface dialog, int which) -> {
+                      depthSettings.setUseDepthForOcclusion(false);
+                    })
+            .show();
   }
 
   /** Shows checkboxes to the user to facilitate toggling of depth-based effects. */
@@ -928,27 +924,27 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
     if (session.isDepthModeSupported(Config.DepthMode.AUTOMATIC)) {
       // With depth support, the user can select visualization options.
       new AlertDialog.Builder(this)
-          .setTitle(R.string.options_title_with_depth)
-          .setMultiChoiceItems(
-              resources.getStringArray(R.array.depth_options_array),
-              settingsMenuDialogCheckboxes,
-              (DialogInterface dialog, int which, boolean isChecked) ->
-                  settingsMenuDialogCheckboxes[which] = isChecked)
-          .setPositiveButton(
-              R.string.done,
-              (DialogInterface dialogInterface, int which) -> applySettingsMenuDialogCheckboxes())
-          .setNegativeButton(
-              android.R.string.cancel,
-              (DialogInterface dialog, int which) -> resetSettingsMenuDialogCheckboxes())
-          .show();
+              .setTitle(R.string.options_title_with_depth)
+              .setMultiChoiceItems(
+                      resources.getStringArray(R.array.depth_options_array),
+                      settingsMenuDialogCheckboxes,
+                      (DialogInterface dialog, int which, boolean isChecked) ->
+                              settingsMenuDialogCheckboxes[which] = isChecked)
+              .setPositiveButton(
+                      R.string.done,
+                      (DialogInterface dialogInterface, int which) -> applySettingsMenuDialogCheckboxes())
+              .setNegativeButton(
+                      android.R.string.cancel,
+                      (DialogInterface dialog, int which) -> resetSettingsMenuDialogCheckboxes())
+              .show();
     } else {
       // Without depth support, no settings are available.
       new AlertDialog.Builder(this)
-          .setTitle(R.string.options_title_without_depth)
-          .setPositiveButton(
-              R.string.done,
-              (DialogInterface dialogInterface, int which) -> applySettingsMenuDialogCheckboxes())
-          .show();
+              .setTitle(R.string.options_title_without_depth)
+              .setPositiveButton(
+                      R.string.done,
+                      (DialogInterface dialogInterface, int which) -> applySettingsMenuDialogCheckboxes())
+              .show();
     }
   }
 
@@ -987,10 +983,10 @@ public class HelloArActivity extends AppCompatActivity implements Classifier, GL
 
     // Temporarily store the transformed points into outputTransform.
     frame.transformCoordinates2d(
-        Coordinates2d.OPENGL_NORMALIZED_DEVICE_COORDINATES,
-        ndcBasis,
-        Coordinates2d.TEXTURE_NORMALIZED,
-        frameTransform);
+            Coordinates2d.OPENGL_NORMALIZED_DEVICE_COORDINATES,
+            ndcBasis,
+            Coordinates2d.TEXTURE_NORMALIZED,
+            frameTransform);
 
     // Convert the transformed points into an affine transform and transpose it.
     float ndcOriginX = frameTransform[0];
