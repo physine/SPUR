@@ -21,3 +21,8 @@ This label is displayed to the screen along with the number of anchors placed.  
 
 
 
+Have a look at my poster!
+[ClearyA-ComputerScience-2020.pdf](https://github.com/physine/SPUR/files/5299304/ClearyA-ComputerScience-2020.pdf)
+
+Or watch my video preesentaation on YouTube! https://youtu.be/rXudDBucquo
+
